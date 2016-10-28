@@ -135,6 +135,16 @@ bool CexFuncStringPhraseTobiEndTone(const TxpCexspec* cex,
                      const TxpCexspecContext* context,
                      std::string* buffer);
 
+bool CexFuncIntCurSyllablePosInWord(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer);
+
+bool CexFuncIntCurSyllablePosInWordBackward(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer) ;
+
 bool CexFuncStringBackwardBackwardPhoneKaldi(const TxpCexspec* cex,
                                              const TxpCexspecFeat* feat,
                                              const TxpCexspecContext* context,

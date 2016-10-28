@@ -611,4 +611,61 @@ bool CexFuncStringForwardForwardPhoneKaldi(const TxpCexspec* cex,
   return KaldiPhone(cex, feat, context, buffer, 2);
 }
 
+// position of the current syllable in the current word (forward)
+bool CexFuncIntCurSyllablePosInWord(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer) 
+{
+  bool okay = true;
+  pugi::xml_node sylnode = context->GetSyllable(0, feat->pause_context);
+
+  pugi::xml_attribute attribute = sylnode.attribute("sylid");
+  int sylid = 0;
+  if (!attribute.empty()) {
+    sylid = atoi(attribute.value());
+  }
+
+  okay = cex->AppendValue(*feat, okay, sylid, buffer);
+  return okay;           
+}
+
+// position of the current syllable in the current word ((backward)
+bool CexFuncIntCurSyllablePosInWordBackward(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer) 
+{
+  bool okay = true;
+  pugi::xml_node wordnode = context->GetWord(0, feat->pause_context);
+  pugi::xml_attribute attribute =  wordnode.attribute("nosyl");
+  int sylno = 0;
+  if (!attribute.empty()) {
+    sylno = atoi(attribute.value());
+  }
+
+  int sylid = 0; 
+  if (sylno > 0)
+  {
+    pugi::xml_node sylnode = context->GetSyllable(0, feat->pause_context);
+    attribute = sylnode.attribute("sylid");
+      
+    if (!attribute.empty()) {
+      sylid = atoi(attribute.value());
+    }
+    
+    if (sylno > sylid)
+    {
+      sylid = sylno - sylid;
+    }
+    else
+    {
+      sylid = sylno;
+    }
+  }
+  
+  okay = cex->AppendValue(*feat, okay, sylid, buffer);
+  return okay;          
+}
+
 }  // namespace kaldi
