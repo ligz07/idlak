@@ -668,4 +668,135 @@ bool CexFuncIntCurSyllablePosInWordBackward(const TxpCexspec* cex,
   return okay;          
 }
 
+bool CexFuncIntCurSyllablePosInPhrase(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer) 
+{
+  bool okay = true;
+  pugi::xml_node sylnode = context->GetSyllable(0, feat->pause_context);
+  pugi::xml_node wordnode = context->GetWord(0, feat->pause_context);
+  
+  int wordid = -(atoi(wordnode.attribute("wordid").value()) - 1);
+  int synum = 0;
+  while (wordid < 0)
+  {
+    pugi::xml_node wordnode = context->GetWord(wordid, feat->pause_context);
+    synum += atoi(wordnode.attribute("nosyl").value());
+    wordid++;
+  }
+
+  synum  += atoi(sylnode.attribute("sylid").value());
+  okay = cex->AppendValue(*feat, okay, synum, buffer);
+  return okay;           
+}
+
+bool CexFuncIntCurSyllablePosInPhraseBackward(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer) 
+{
+  bool okay = true;
+  pugi::xml_node sylnode = context->GetSyllable(0, feat->pause_context);
+  pugi::xml_node spurnode = context->GetSpurt(0, feat->pause_context);
+  pugi::xml_node wordnode = context->GetWord(0, feat->pause_context);
+  
+  int wordno = atoi(spurnode.attribute("no_wrds").value());
+  int wordcount = wordno - atoi(wordnode.attribute("wordid").value()) + 1;
+  int synum = 0;
+  int cur = 1;
+  while (cur < wordcount)
+  {
+    pugi::xml_node wordnode = context->GetWord(cur, feat->pause_context);
+    synum += atoi(wordnode.attribute("nosyl").value());
+    cur++;
+  }
+
+  int sylno = atoi(wordnode.attribute("nosyl").value());
+  synum  += sylno - atoi(sylnode.attribute("sylid").value());
+  okay = cex->AppendValue(*feat, okay, synum, buffer);
+  return okay;           
+}
+bool isVowel(std::string phone)
+{
+  static std::string vowel_list[] = {"aa","ae", "ah", "ao", "ah", "ay","eh", "er", "ey", "ih", "iy", "ow", "oy", "uh", "uw"};
+
+  for (int i = 0; i < 15; i++)
+  {
+    if (vowel_list[i] == phone)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+bool CexFuncStringCurSyllableVowel(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer) 
+{
+  bool okay = true;
+  pugi::xml_node phonenode = context->GetPhone(0, feat->pause_context);
+  pugi::xml_node sylnode = context->GetSyllable(0, feat->pause_context);
+  std::string phone = phonenode.attribute("val").value();
+  bool found = false;
+  if (!isVowel(phone))
+  {
+    int phoneno = atoi(sylnode.attribute("nophons").value());
+    int cur = -(atoi(phonenode.attribute("phonid").value()) - 1);
+    while (cur < 0)
+    {
+      phonenode = context->GetPhone(cur, feat->pause_context);
+      std::string phonec = phonenode.attribute("val").value();
+      if (isVowel(phonec))
+      {
+        phone = phonec;
+        found = true;
+        break;
+      }
+      cur++;
+    }
+
+    if (!found)
+    {
+        int count  = phoneno - atoi(sylnode.attribute("phonid").value()) + 1;
+        cur = 1;
+        while (cur < count)
+        {
+          phonenode = context->GetPhone(cur, feat->pause_context);
+          std::string phonec = phonenode.attribute("val").value();
+          if (isVowel(phonec))
+          {
+            phone = phonec;
+            found = true;
+              break;
+          }
+          cur++;
+        }
+    }
+  }
+  else
+  {
+    found = true;
+  }
+  if (found)
+  {
+    okay = cex->AppendValue(*feat, okay, phone.c_str(), buffer);
+  }
+  else
+  {
+    okay = cex->AppendValue(*feat, okay, "X", buffer);
+  }
+  return okay;           
+}
+
+bool CexFuncIntNotImp(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer) 
+{
+  bool okay = true;
+  okay = cex->AppendValue(*feat, okay, 0, buffer);
+  return okay;
+}
 }  // namespace kaldi

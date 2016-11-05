@@ -206,6 +206,7 @@ int32 TxpCexspec::AddPauseNodes(pugi::xml_document* doc) {
   pugi::xpath_node_set nodes =
       doc->document_element().select_nodes("//phon|//break");
   nodes.sort();
+  bool beginbreak = true;
   for (pugi::xpath_node_set::const_iterator it = nodes.begin();
        it != nodes.end();
        ++it) {
@@ -232,12 +233,24 @@ int32 TxpCexspec::AddPauseNodes(pugi::xml_document* doc) {
       }
       if (pauhand_ == CEXSPECPAU_HANDLER_UTTERANCE && !uttbreak &&
           internalbreak && !endbreak) continue;
+      char *p = NULL;
+      char sil[] = "sil";
+      char pau[] = "pau";
+      if (endbreak || (beginbreak && uttbreak))
+      {
+        p = sil;
+      }
+      else
+      {
+        p = pau;
+      }
       childnode = node.append_child("tk");
-      childnode.append_attribute("pron").set_value("pau");
+      childnode.append_attribute("pron").set_value(p);
       childnode = childnode.append_child("syl");
-      childnode.append_attribute("val").set_value("pau");
+      childnode.append_attribute("val").set_value(p);
       childnode = childnode.append_child("phon");
-      childnode.append_attribute("val").set_value("pau");
+      childnode.append_attribute("val").set_value(p);
+      beginbreak = false;
     }
   }
   return true;
@@ -411,13 +424,15 @@ pugi::xml_node TxpCexspecContext::GetPhone(const int32 idx,
   if (idx >= 0) {
     for (i = 0; i < idx; i++) {
       if ((current_phone_ + i) == phones_.end()) return empty;
-      if (!strcmp("pau", (current_phone_ + i)->node().attribute("val").value()))
+      if (!strcmp("pau", (current_phone_ + i)->node().attribute("val").value()) 
+          && !strcmp("sil", (current_phone_ + i)->node().attribute("val").value()))
         pau_found++;
     }
   } else {
     for (i = 0; i > idx; i--) {
       if ((current_phone_ + i) == phones_.begin()) return empty;
-      if (!strcmp("pau", (current_phone_ + i)->node().attribute("val").value()))
+      if (!strcmp("pau", (current_phone_ + i)->node().attribute("val").value()) 
+          && !strcmp("sil", (current_phone_ + i)->node().attribute("val").value()))
         pau_found++;
     }
   }

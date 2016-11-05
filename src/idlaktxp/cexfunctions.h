@@ -143,8 +143,23 @@ bool CexFuncIntCurSyllablePosInWord(const TxpCexspec* cex,
 bool CexFuncIntCurSyllablePosInWordBackward(const TxpCexspec* cex,
                      const TxpCexspecFeat* feat,
                      const TxpCexspecContext* context,
+                     std::string* buffer);
+
+bool CexFuncIntCurSyllablePosInPhrase(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
                      std::string* buffer) ;
 
+bool CexFuncIntCurSyllablePosInPhraseBackward(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer) ;
+
+bool isVowel(std::string phone);
+bool CexFuncStringCurSyllableVowel(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer) ;
 bool CexFuncStringBackwardBackwardPhoneKaldi(const TxpCexspec* cex,
                                              const TxpCexspecFeat* feat,
                                              const TxpCexspecContext* context,
@@ -171,7 +186,10 @@ bool CexFuncStringForwardForwardPhoneKaldi(const TxpCexspec* cex,
                                     std::string* buffer);
 
 
-
+bool CexFuncIntNotImp(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer) 
 }  // namespace kaldi
 
 #endif  // KALDI_IDLAKTXP_CEXFUNCTIONS_H_

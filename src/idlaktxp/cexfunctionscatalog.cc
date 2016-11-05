@@ -26,15 +26,36 @@
 
 namespace kaldi {
 
-const char* const CEXFUNCLBL[] = {"BackwardBackwardPhone", "BackwardPhone", "Phone", "ForwardPhone", "ForwardForwardPhone", "SegmentLocationFromFront", "SegmentLocationFromBack", "BackwardSyllableNumPhones", "SyllableNumPhones", "ForwardSyllableNumPhones", "BackwardSyllableStress", "SyllableStress", "ForwardSyllableStress", "BackwardWordPosTag", "WordPosTag", "ForwardWordPosTag", "BackwardWordNumSyls", "WordNumSyls", "ForwardWordNumSyls", "PhraseNumWords", "PhraseTobiEndTone", "BackwardBackwardPhoneKaldi", "BackwardPhoneKaldi", "PhoneKaldi", "ForwardPhoneKaldi", "ForwardForwardPhoneKaldi"};
+const char* const CEXFUNCLBL[] = {"BackwardBackwardPhone", "BackwardPhone", "Phone", "ForwardPhone", "ForwardForwardPhone", "SegmentLocationFromFront", "SegmentLocationFromBack", "BackwardSyllableNumPhones", "SyllableNumPhones", "ForwardSyllableNumPhones", "BackwardSyllableStress", "SyllableStress", "ForwardSyllableStress", "BackwardWordPosTag", "WordPosTag", "ForwardWordPosTag", "BackwardWordNumSyls", "WordNumSyls", "ForwardWordNumSyls", "PhraseNumWords", "PhraseTobiEndTone", "BackwardBackwardPhoneKaldi", "BackwardPhoneKaldi", "PhoneKaldi", "ForwardPhoneKaldi", "ForwardForwardPhoneKaldi",
+"CurSyllablePosInWord",
+"CurSyllablePosInWordBackward",
+"CurSyllablePosInPhrase",
+"CurSyllablePosInPhraseBackward",
+"CurSyllableVowel",
+"NotImp"
+};
 
-const cexfunction CEXFUNC[] = {&CexFuncStringBackwardBackwardPhone, &CexFuncStringBackwardPhone, &CexFuncStringPhone, &CexFuncStringForwardPhone, &CexFuncStringForwardForwardPhone, &CexFuncIntSegmentLocationFromFront, &CexFuncIntSegmentLocationFromBack, &CexFuncIntBackwardSyllableNumPhones, &CexFuncIntSyllableNumPhones, &CexFuncIntForwardSyllableNumPhones, &CexFuncIntBackwardSyllableStress, &CexFuncIntSyllableStress, &CexFuncIntForwardSyllableStress, &CexFuncStringBackwardWordPosTag, &CexFuncStringWordPosTag, &CexFuncStringForwardWordPosTag, &CexFuncIntBackwardWordNumSyls, &CexFuncIntWordNumSyls, &CexFuncIntForwardWordNumSyls, &CexFuncIntPhraseNumWords, &CexFuncStringPhraseTobiEndTone, &CexFuncStringBackwardBackwardPhoneKaldi, &CexFuncStringBackwardPhoneKaldi, &CexFuncStringPhoneKaldi, &CexFuncStringForwardPhoneKaldi, &CexFuncStringForwardForwardPhoneKaldi};
+const cexfunction CEXFUNC[] = {&CexFuncStringBackwardBackwardPhone, &CexFuncStringBackwardPhone, &CexFuncStringPhone, &CexFuncStringForwardPhone, &CexFuncStringForwardForwardPhone, &CexFuncIntSegmentLocationFromFront, &CexFuncIntSegmentLocationFromBack, &CexFuncIntBackwardSyllableNumPhones, &CexFuncIntSyllableNumPhones, &CexFuncIntForwardSyllableNumPhones, &CexFuncIntBackwardSyllableStress, &CexFuncIntSyllableStress, &CexFuncIntForwardSyllableStress, &CexFuncStringBackwardWordPosTag, &CexFuncStringWordPosTag, &CexFuncStringForwardWordPosTag, &CexFuncIntBackwardWordNumSyls, &CexFuncIntWordNumSyls, &CexFuncIntForwardWordNumSyls, &CexFuncIntPhraseNumWords, &CexFuncStringPhraseTobiEndTone, &CexFuncStringBackwardBackwardPhoneKaldi, &CexFuncStringBackwardPhoneKaldi, &CexFuncStringPhoneKaldi, &CexFuncStringForwardPhoneKaldi, &CexFuncStringForwardForwardPhoneKaldi
+&CexFuncIntCurSyllablePosInWord,
+&CexFuncIntCurSyllablePosInWordBackward,
+&CexFuncIntCurSyllablePosInPhrase,
+&CexFuncIntCurSyllablePosInPhraseBackward,
+&CexFuncStringCurSyllableVowel,
+&CexFuncIntNotImp
+};
 
 
 // Return type
 // Int - integer either a count or a class
 // String - a string, part of a defined set of possible values listed in
 //       cex-default.xml
-const enum CEXSPEC_TYPE CEXFUNCTYPE[] = {CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR};
+const enum CEXSPEC_TYPE CEXFUNCTYPE[] = {CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_INT, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR, CEXSPEC_TYPE_STR,
+CEXSPEC_TYPE_INT,
+CEXSPEC_TYPE_INT,
+CEXSPEC_TYPE_INT,
+CEXSPEC_TYPE_INT,
+CEXSPEC_TYPE_STR,
+CEXSPEC_TYPE_INT
+};
 
 }  // namespace kaldi
