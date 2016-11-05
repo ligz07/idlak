@@ -29,7 +29,7 @@
 // tries to continue
 
 #include "idlaktxp/txpcexspec.h"
-
+bool isVowel(std::string phone);
 namespace kaldi {
 
 
@@ -788,6 +788,55 @@ bool CexFuncStringCurSyllableVowel(const TxpCexspec* cex,
     okay = cex->AppendValue(*feat, okay, "X", buffer);
   }
   return okay;           
+}
+
+int GetTone(pugi::xml_node *node)
+{
+  int tone = 0;
+  if (!node->empty())
+  {
+    pugi::xml_attribute attribute = node->attribute("tone");
+    if (!attribute.empty()) {
+      tone = atoi(attribute.value());
+    }
+  }
+  return tone;
+}
+
+bool CexFuncIntCurPhoneTone(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer) 
+{
+  bool okay = true;
+  pugi::xml_node phonenode = context->GetPhone(0, feat->pause_context);
+  int tone = GetTone(&phonenode);
+  okay = cex->AppendValue(*feat, okay, tone, buffer);
+  return okay;
+}
+
+bool CexFuncIntBackwardPhoneTone(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer) 
+{
+  bool okay = true;
+  pugi::xml_node phonenode = context->GetPhone(-1, feat->pause_context);
+  int tone = GetTone(&phonenode);
+  okay = cex->AppendValue(*feat, okay, tone, buffer);
+  return okay;
+}
+
+bool CexFuncIntForwardPhoneTone(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer) 
+{
+  bool okay = true;
+  pugi::xml_node phonenode = context->GetPhone(1, feat->pause_context);
+  int tone = GetTone(&phonenode);
+  okay = cex->AppendValue(*feat, okay, tone, buffer);
+  return okay;
 }
 
 bool CexFuncIntNotImp(const TxpCexspec* cex,
