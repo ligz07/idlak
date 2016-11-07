@@ -48,20 +48,48 @@ bool TxpSyllabify::Process(pugi::xml_document* input) {
     pugi::xml_node spt = (*it).node();
     pugi::xpath_node_set tks = spt.select_nodes("descendant::tk");
     tks.sort();
+    bool nextSkip = false;
     for (pugi::xpath_node_set::const_iterator it2 = tks.begin();
          it2 != tks.end();
          ++it2) {
       pugi::xml_node node = (*it2).node();
+      bool bSkip = false;
       if (!node.attribute("pron").empty())
-        sylmax_.GetPhoneVector(node.attribute("pron").value(), &pvector);
-      if (it2 == tks.end() - 1) pvector[pvector.size() - 1].cross_word = false;
+      {
+        const char * p = node.attribute("pron").value();
+        if (strcmp(p , "") != 0)
+        {
+            sylmax_.GetPhoneVector(p, &pvector);
+        }
+        else
+        {
+            bSkip = true;
+        }
+      }
+      if (pvector.size() == 0)
+      {
+          pre_node = node;
+          continue;
+          //std::cout<<node.attribute("pron").value()<<std::endl;
+      }
+      if (it2 == tks.end() - 1)
+      {
+          int k = pvector.size() - 1;
+          //std::cout<<k<<" "<<pvector.size()<<std::endl;
+          /*if (k < 0)
+          {
+             std::cout<<k<<" "<<pvector.size()<<std::endl;
+          }*/
+          pvector[k].cross_word = false;
+      }
       sylmax_.Maxonset(&pvector);
-      if (it2 != tks.begin()) {
+      if (it2 != tks.begin() && !nextSkip) {
         sylmax_.Writespron(&pvector, &sylpron);
         pre_node.append_attribute("spron").set_value(sylpron.c_str());
         // add syllabic xml structure
         _add_sylxml(sylpron.c_str(), &pre_node);
       }
+      nextSkip = bSkip;
       pre_node = node;
     }
     if (!pre_node.empty()) {
@@ -121,6 +149,7 @@ static void _add_sylxml(const char* spron, pugi::xml_node* node) {
               sylnode.append_attribute("stress").set_value(s2.c_str());
               sylnode.append_attribute("sylid").set_value(sylid);
               sylnode.append_attribute("nophons").set_value(phonid - 1);
+              sylnode.append_attribute("tone").set_value(s2.c_str());
           }
         // if (syl) std::cout << "H" << s.c_str() << ' ' << *stress << '\n';
         // reset syllable, stress and type
@@ -147,6 +176,8 @@ static void _add_sylxml(const char* spron, pugi::xml_node* node) {
           phonenode.append_attribute("val").set_value(s.c_str());
           phonenode.append_attribute("type").set_value(txpsyllabletype[type]);
           phonenode.append_attribute("phonid").set_value(phonid);
+          std::string tone = std::string(p, 1);
+          phonenode.append_attribute("tone").set_value(tone.c_str());
           phonid++;
         }
         // if (phone) std::cout << s.c_str() << ' ' << type << '\n';

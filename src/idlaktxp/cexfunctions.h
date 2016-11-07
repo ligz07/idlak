@@ -16,7 +16,7 @@
 // limitations under the License.
 //
 
-// Automatically generated: Wed Feb  4 10:38:27 2015
+// Automatically generated: Sat Nov 05 21:58:44 2016
 
 #ifndef KALDI_IDLAKTXP_CEXFUNCTIONS_H
 #define KALDI_IDLAKTXP_CEXFUNCTIONS_H
@@ -28,7 +28,7 @@
 
 namespace kaldi {
 
-#define CEX_NO_FEATURES 26
+#define CEX_NO_FEATURES 35
 
 bool CexFuncStringBackwardBackwardPhone(const TxpCexspec* cex,
                       const TxpCexspecFeat* feat,
@@ -159,6 +159,51 @@ bool CexFuncStringForwardForwardPhoneKaldi(const TxpCexspec* cex,
                                     const TxpCexspecFeat* feat,
                                     const TxpCexspecContext* context,
                                     std::string* buffer);
+
+bool CexFuncIntCurSyllablePosInWord(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer);
+
+bool CexFuncIntCurSyllablePosInWordBackward(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer);
+
+bool CexFuncIntCurSyllablePosInPhrase(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer);
+
+bool CexFuncIntCurSyllablePosInPhraseBackward(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer);
+
+bool CexFuncStringCurSyllableVowel(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer);
+
+bool CexFuncIntCurPhoneTone(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer);
+
+bool CexFuncIntBackwardPhoneTone(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer);
+
+bool CexFuncIntForwardPhoneTone(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer);
+
+bool CexFuncIntNotImp(const TxpCexspec* cex,
+                     const TxpCexspecFeat* feat,
+                     const TxpCexspecContext* context,
+                     std::string* buffer);
 
 
 
